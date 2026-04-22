@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="100%" height="100%" fill="#f7f9fc" />
+  <text x="88" y="24" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#18212f">MTC cumulative NVDR NET (2026-01-01 to 2026-04-21)</text>
+  <text x="88" y="46" font-size="12" font-family="Arial, sans-serif" fill="#445166">Unit: million baht, based on NVDR Turnover (Net) from value view</text>
+  
+      <line x1="88" y1="36.0" x2="936" y2="36.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="78" y="40.0" text-anchor="end" font-size="12" fill="#445166">387.60</text>
+    
+      <line x1="88" y1="101.6" x2="936" y2="101.6" stroke="#d8dde6" stroke-width="1" />
+      <text x="78" y="105.6" text-anchor="end" font-size="12" fill="#445166">217.05</text>
+    
+      <line x1="88" y1="167.2" x2="936" y2="167.2" stroke="#d8dde6" stroke-width="1" />
+      <text x="78" y="171.2" text-anchor="end" font-size="12" fill="#445166">46.50</text>
+    
+      <line x1="88" y1="232.8" x2="936" y2="232.8" stroke="#d8dde6" stroke-width="1" />
+      <text x="78" y="236.8" text-anchor="end" font-size="12" fill="#445166">-124.04</text>
+    
+      <line x1="88" y1="298.4" x2="936" y2="298.4" stroke="#d8dde6" stroke-width="1" />
+      <text x="78" y="302.4" text-anchor="end" font-size="12" fill="#445166">-294.59</text>
+    
+      <line x1="88" y1="364.0" x2="936" y2="364.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="78" y="368.0" text-anchor="end" font-size="12" fill="#445166">-465.14</text>
+    
+  <line x1="88" y1="185.1" x2="936" y2="185.1" stroke="#7a8799" stroke-width="1.4" stroke-dasharray="4 4" />
+  <line x1="88" y1="36" x2="88" y2="364" stroke="#445166" stroke-width="1.2" />
+  <line x1="88" y1="364" x2="936" y2="364" stroke="#445166" stroke-width="1.2" />
+  
+      <line x1="88.0" y1="364" x2="88.0" y2="370" stroke="#445166" stroke-width="1" />
+      <text x="88.0" y="386" text-anchor="middle" font-size="12" fill="#445166">2026-01-05</text>
+    
+      <line x1="506.0" y1="364" x2="506.0" y2="370" stroke="#445166" stroke-width="1" />
+      <text x="506.0" y="386" text-anchor="middle" font-size="12" fill="#445166">2026-02-23</text>
+    
+      <line x1="936.0" y1="364" x2="936.0" y2="370" stroke="#445166" stroke-width="1" />
+      <text x="936.0" y="386" text-anchor="middle" font-size="12" fill="#445166">2026-04-21</text>
+    
+  <polyline fill="none" stroke="#0b84f3" stroke-width="3" points="88.0,180.3 99.9,165.8 111.9,155.1 123.8,162.8 135.8,162.4 147.7,138.0 159.7,62.6 171.6,36.0 183.5,52.1 195.5,53.9 207.4,78.2 219.4,100.8 231.3,132.1 243.3,151.6 255.2,138.1 267.2,134.2 279.1,119.6 291.0,133.0 303.0,128.7 314.9,116.0 326.9,63.1 338.8,45.9 350.8,65.6 362.7,55.2 374.6,82.2 386.6,55.7 398.5,78.2 410.5,75.9 422.4,85.5 434.4,83.5 446.3,82.3 458.3,69.3 470.2,71.8 482.1,102.0 494.1,103.4 506.0,63.4 518.0,61.6 529.9,68.5 541.9,88.6 553.8,82.5 565.7,66.6 577.7,84.7 589.6,131.5 601.6,105.1 613.5,42.5 625.5,58.2 637.4,64.3 649.4,72.1 661.3,86.5 673.2,86.8 685.2,115.8 697.1,94.4 709.1,87.9 721.0,122.5 733.0,136.2 744.9,144.9 756.8,231.1 768.8,294.1 780.7,325.0 792.7,321.6 804.6,352.9 816.6,357.0 828.5,359.4 840.5,364.0 852.4,342.8 864.3,300.2 876.3,335.6 888.2,338.4 900.2,347.2 912.1,349.8 924.1,335.3 936.0,352.9" />
+  <circle cx="936.0" cy="352.9" r="4.5" fill="#0b84f3" />
+  <text x="932.0" y="342.9" font-size="12" fill="#18212f">-436.16</text>
+</svg>

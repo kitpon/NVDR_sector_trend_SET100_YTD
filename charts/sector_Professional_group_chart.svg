@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520">
+  <rect width="100%" height="100%" fill="#f7f9fc" />
+  <text x="96" y="26" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#18212f">Professional sector stock group chart</text>
+  <text x="96" y="48" font-size="12" font-family="Arial, sans-serif" fill="#445166">Cumulative NVDR NET by stock | 2026-01-01 to 2026-04-21</text>
+  
+      <line x1="96" y1="54.0" x2="890" y2="54.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="86" y="58.0" text-anchor="end" font-size="12" fill="#445166">48.82</text>
+    
+      <line x1="96" y1="136.0" x2="890" y2="136.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="86" y="140.0" text-anchor="end" font-size="12" fill="#445166">19.54</text>
+    
+      <line x1="96" y1="218.0" x2="890" y2="218.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="86" y="222.0" text-anchor="end" font-size="12" fill="#445166">-9.74</text>
+    
+      <line x1="96" y1="300.0" x2="890" y2="300.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="86" y="304.0" text-anchor="end" font-size="12" fill="#445166">-39.02</text>
+    
+      <line x1="96" y1="382.0" x2="890" y2="382.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="86" y="386.0" text-anchor="end" font-size="12" fill="#445166">-68.30</text>
+    
+      <line x1="96" y1="464.0" x2="890" y2="464.0" stroke="#d8dde6" stroke-width="1" />
+      <text x="86" y="468.0" text-anchor="end" font-size="12" fill="#445166">-97.58</text>
+    
+  <line x1="96" y1="190.7" x2="890" y2="190.7" stroke="#7a8799" stroke-width="1.4" stroke-dasharray="4 4" />
+  <line x1="96" y1="54" x2="96" y2="464" stroke="#445166" stroke-width="1.2" />
+  <line x1="96" y1="464" x2="890" y2="464" stroke="#445166" stroke-width="1.2" />
+  
+      <line x1="96.0" y1="464" x2="96.0" y2="470" stroke="#445166" stroke-width="1" />
+      <text x="96.0" y="486" text-anchor="middle" font-size="12" fill="#445166">2026-01-05</text>
+    
+      <line x1="487.4" y1="464" x2="487.4" y2="470" stroke="#445166" stroke-width="1" />
+      <text x="487.4" y="486" text-anchor="middle" font-size="12" fill="#445166">2026-02-23</text>
+    
+      <line x1="890.0" y1="464" x2="890.0" y2="470" stroke="#445166" stroke-width="1" />
+      <text x="890.0" y="486" text-anchor="middle" font-size="12" fill="#445166">2026-04-21</text>
+    
+  <polyline fill="none" stroke="#0b84f3" stroke-width="2.2" points="96.0,181.5 107.2,176.5 118.4,161.4 129.5,195.2 140.7,197.0 151.9,211.0 163.1,204.5 174.3,189.6 185.5,162.2 196.6,154.1 207.8,139.0 219.0,124.6 230.2,106.9 241.4,109.6 252.6,118.6 263.7,115.0 274.9,99.3 286.1,105.4 297.3,100.9 308.5,93.7 319.7,85.0 330.8,54.0 342.0,80.0 353.2,80.9 364.4,97.7 375.6,64.9 386.8,95.1 397.9,123.3 409.1,126.9 420.3,141.4 431.5,145.5 442.7,135.7 453.9,132.2 465.0,110.2 476.2,206.6 487.4,202.9 498.6,225.3 509.8,285.4 521.0,336.4 532.1,352.5 543.3,363.8 554.5,390.7 565.7,407.1 576.9,410.9 588.1,410.0 599.2,433.1 610.4,450.8 621.6,454.7 632.8,459.5 644.0,464.0 655.2,461.1 666.3,462.5 677.5,445.0 688.7,449.8 699.9,445.5 711.1,446.4 722.3,446.3 733.4,446.8 744.6,443.6 755.8,437.1 767.0,435.6 778.2,441.4 789.4,443.2 800.5,442.5 811.7,431.7 822.9,429.5 834.1,438.8 845.3,436.8 856.5,441.9 867.6,441.6 878.8,437.2 890.0,433.6" /><circle cx="890.0" cy="433.6" r="3.5" fill="#0b84f3" />
+  
+      <line x1="900" y1="70" x2="920" y2="70" stroke="#0b84f3" stroke-width="3" />
+      <text x="928" y="74" font-size="12" fill="#18212f">SISB</text>
+    
+</svg>
