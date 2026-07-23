@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVDR Interactive Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <style>
+        :root { --uob-blue: #0f4c81; --bg-gray: #f4f7fb; --border: #d6deea; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg-gray); color: #1b2430; }
+        header { background: var(--uob-blue); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .logo-box img { max-height: 50px; filter: brightness(0) invert(1); }
+        .container { padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .controls { background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: end; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        input, select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; box-sizing: border-box; }
+        button { background: var(--uob-blue); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { opacity: 0.9; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .full-width { grid-column: 1 / -1; }
+        h2 { margin-top: 0; color: var(--uob-blue); font-size: 1.2rem; border-bottom: 2px solid var(--bg-gray); padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 10px; border-bottom: 1px solid var(--bg-gray); text-align: center; }
+        th { background: #f8fafc; font-weight: bold; }
+        .num-pos { color: #059669; font-weight: bold; }
+        .num-neg { color: #dc2626; font-weight: bold; }
+        #chart-container { min-height: 500px; }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; justify-content: center; align-items: center; z-index: 1000; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading-overlay">Loading Web Data...</div>
+    <header>
+        <div>
+            <h1 style="margin:0; font-size: 1.5rem;">NVDR Interactive Dashboard</h1>
+            <div id="data-info" style="font-size: 0.8rem; opacity: 0.8;"></div>
+        </div>
+        <div class="logo-box">
+             <img src="UOBKH_logo.png">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <div>
+                <label>Start Date</label>
+                <input type="date" id="start-date">
+            </div>
+            <div>
+                <label>End Date</label>
+                <input type="date" id="end-date">
+            </div>
+            <div>
+                <label>Compare Stocks</label>
+                <select id="stock-select" multiple placeholder="Select stocks..."></select>
+            </div>
+            <div>
+                <label>Compare Sectors</label>
+                <select id="sector-select" multiple placeholder="Select sectors..."></select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="processData()" id="btn-go" style="flex: 2;">PROCESS & UPDATE</button>
+                <button onclick="resetFilters()" style="flex: 1; background: #64748b;">RESET</button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card full-width">
+                <h2>Comparison Chart (Cumulative Net Flow)</h2>
+                <div id="comparison-chart"></div>
+            </div>
+
+            <div class="card">
+                <h2>Top NVDR Net Buy (Selected Period)</h2>
+                <table id="table-buy">
+                    <thead><tr><th>Symbol</th><th>Sector</th><th>NET (MB)</th><th>Turnover</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Top NVDR Net Sell (Selected Period)</h2>
+                <table id="table-sell">
+                    <thead><tr><th>Symbol</th><th>Sector</th><th>NET (MB)</th><th>Turnover</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="card full-width">
+                <h2>Sector Summary (Selected Period)</h2>
+                <table id="table-sector">
+                    <thead><tr><th>Sector</th><th>Symbols</th><th>Total Buy</th><th>Total Sell</th><th>Total NET (MB)</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let rawData = null;
+        let stockSelect = null;
+        let sectorSelect = null;
+
+        async function init() {
+            try {
+                const response = await fetch('web_data.json');
+                rawData = await response.json();
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('data-info').innerText = `Generated: ${rawData.metadata.generated_at} | Universe: ${rawData.metadata.symbols.length} symbols`;
+
+                let allDates = [];
+                Object.values(rawData.stocks).forEach(s => s.data.forEach(d => allDates.push(d.date)));
+                allDates.sort();
+                const minDate = allDates[0];
+                const maxDate = allDates[allDates.length - 1];
+
+                document.getElementById('start-date').value = minDate;
+                document.getElementById('end-date').value = maxDate;
+
+                const symbols = Object.keys(rawData.stocks).sort();
+                const sectors = [...new Set(Object.values(rawData.stocks).map(s => s.sector))].sort();
+
+                stockSelect = new TomSelect('#stock-select', { 
+                    options: symbols.map(s => ({ value: s, text: s })),
+                    plugins: ['remove_button']
+                });
+                
+                sectorSelect = new TomSelect('#sector-select', { 
+                    options: sectors.map(s => ({ value: s, text: s })),
+                    plugins: ['remove_button']
+                });
+
+                processData();
+            } catch (e) {
+                console.error(e);
+                alert("Failed to load web_data.json. Ensure it exists in the same folder.");
+            }
+        }
+
+        function formatNum(n) {
+            return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function resetFilters() {
+            stockSelect.clear();
+            sectorSelect.clear();
+            processData();
+        }
+
+        function processData() {
+            const start = document.getElementById('start-date').value;
+            const end = document.getElementById('end-date').value;
+            if (!start || !end) return;
+
+            const summaries = [];
+            const sectorMap = {};
+
+            Object.entries(rawData.stocks).forEach(([symbol, info]) => {
+                const filtered = info.data.filter(d => d.date >= start && d.date <= end);
+                if (filtered.length === 0) return;
+
+                const net = filtered.reduce((sum, d) => sum + d.net_mb, 0);
+                const turnover = filtered.reduce((sum, d) => sum + d.buy_sell_mb, 0);
+                const buy = filtered.reduce((sum, d) => sum + d.buy_mb, 0);
+                const sell = filtered.reduce((sum, d) => sum + d.sell_mb, 0);
+
+                summaries.push({ symbol, sector: info.sector, net, turnover, buy, sell, data: filtered });
+
+                if (!sectorMap[info.sector]) {
+                    sectorMap[info.sector] = { buy: 0, sell: 0, net: 0, count: 0, symbols: new Set() };
+                }
+                sectorMap[info.sector].buy += buy;
+                sectorMap[info.sector].sell += sell;
+                sectorMap[info.sector].net += net;
+                sectorMap[info.sector].count++;
+                sectorMap[info.sector].symbols.add(symbol);
+            });
+
+            updateTables(summaries, sectorMap);
+            updateChart(summaries, sectorMap, start, end);
+        }
+
+        function updateTables(summaries, sectorMap) {
+            const sorted = [...summaries].sort((a, b) => b.net - a.net);
+            const topBuy = sorted.slice(0, 10);
+            const topSell = sorted.slice(-10).reverse();
+
+            const renderRows = (data, targetId) => {
+                const tbody = document.querySelector(`#${targetId} tbody`);
+                tbody.innerHTML = data.map(r => `
+                    <tr>
+                        <td><strong>${r.symbol}</strong></td>
+                        <td>${r.sector}</td>
+                        <td class="${r.net >= 0 ? 'num-pos' : 'num-neg'}">${formatNum(r.net)}</td>
+                        <td>${formatNum(r.turnover)}</td>
+                    </tr>
+                `).join('');
+            };
+
+            renderRows(topBuy, 'table-buy');
+            renderRows(topSell, 'table-sell');
+
+            const sectorTable = document.querySelector('#table-sector tbody');
+            sectorTable.innerHTML = Object.entries(sectorMap)
+                .sort((a, b) => b[1].net - a[1].net)
+                .map(([name, data]) => `
+                    <tr>
+                        <td><strong>${name}</strong></td>
+                        <td>${data.symbols.size}</td>
+                        <td>${formatNum(data.buy)}</td>
+                        <td>${formatNum(data.sell)}</td>
+                        <td class="${data.net >= 0 ? 'num-pos' : 'num-neg'}">${formatNum(data.net)}</td>
+                    </tr>
+                `).join('');
+        }
+
+        function updateChart(summaries, sectorMap, start, end) {
+            const selectedStocks = stockSelect.getValue();
+            const selectedSectors = sectorSelect.getValue();
+            const traces = [];
+
+            let itemsToTrace = selectedStocks.length > 0 || selectedSectors.length > 0 
+                ? summaries.filter(s => selectedStocks.includes(s.symbol))
+                : summaries.sort((a, b) => b.net - a.net).slice(0, 5);
+
+            itemsToTrace.forEach(s => {
+                let cumNet = 0;
+                const traceData = s.data.map(d => {
+                    cumNet += d.net_mb;
+                    return { x: d.date, y: cumNet };
+                });
+                traces.push({
+                    x: traceData.map(d => d.x),
+                    y: traceData.map(d => d.y),
+                    name: s.symbol,
+                    type: 'scatter',
+                    mode: 'lines+markers'
+                });
+            });
+
+            selectedSectors.forEach(secName => {
+                const secData = {};
+                summaries.filter(s => s.sector === secName).forEach(s => {
+                    s.data.forEach(d => {
+                        secData[d.date] = (secData[d.date] || 0) + d.net_mb;
+                    });
+                });
+                const sortedDates = Object.keys(secData).sort();
+                let cumNet = 0;
+                const traceData = sortedDates.map(d => {
+                    cumNet += secData[d];
+                    return { x: d, y: cumNet };
+                });
+                traces.push({
+                    x: traceData.map(d => d.x),
+                    y: traceData.map(d => d.y),
+                    name: `Sector: ${secName}`,
+                    line: { width: 4, dash: 'dot' },
+                    type: 'scatter'
+                });
+            });
+
+            const layout = {
+                margin: { t: 20, b: 40, l: 60, r: 20 },
+                hovermode: 'x unified',
+                xaxis: { title: 'Date' },
+                yaxis: { title: 'Cumulative Net (MB)', tickformat: ',.0f' },
+                legend: { orientation: 'h', y: -0.2 }
+            };
+            Plotly.newPlot('comparison-chart', traces, layout, { responsive: true });
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+# NVDR Study - Usage & Maintenance Manual
+
+This document explains how to update, maintain, and deploy the NVDR Interactive Dashboard.
+
+## 1. Local Setup
+Ensure you have the required Python libraries installed:
+```bash
+pip install pandas requests beautifulsoup4 matplotlib seaborn
+```
+
+## 2. Weekly Data Update (The "Sync" Workflow)
+To add the latest weekly data without downloading the entire history again:
+
+1.  Open your terminal.
+2.  Run the sync command (change the `--end` date to today):
+    ```bash
+    python nvdr_study.py --start 2020-01-01 --end 2026-04-30 --sync --output-dir NVDR_MASTER
+    ```
+    *   **--sync**: Crucial. Tells the script to look at your existing `raw/*.csv` files and only fetch missing dates.
+    *   **--output-dir**: Always use the same folder name so the script can find your previous data.
+
+3.  The script will generate a fresh `web_data.json` and `dashboard.html` inside the `NVDR_MASTER` folder.
+
+## 3. Deploying to the Web (Git / GitHub Pages)
+To update your live website:
+
+1.  Go to your output folder (e.g., `NVDR_MASTER`).
+2.  Rename `dashboard.html` to `index.html`.
+3.  Copy/Upload these 3 files to your Git repository:
+    *   `index.html`
+    *   `web_data.json`
+    *   `UOBKH_logo.png`
+4.  Commit and Push. Your website will update automatically.
+
+## 4. Maintenance & Safety
+*   **Keep the `raw/` folder safe**: This folder contains the CSVs used for syncing. If you delete it, the `--sync` command will fail, and you will have to download the full history (~6 years) again.
+*   **Cookie Expiry**: If the script fails with "No data collected", your session cookie in `session_cookie.txt` has likely expired. Log in to SETSMART again, copy the new cookie header, and update the file.
+*   **Adding New Stocks**: To add more stocks to the universe, edit `stock_list.txt` and run the script (without `--sync` the first time for the new stocks).
+
+## 5. Troubleshooting
+*   **Dashboard is blank**: Ensure `web_data.json` is in the same folder as `index.html`.
+*   **Local file error**: If opening `index.html` locally shows a "Failed to load" error, run a local server:
+    ```bash
+    python -m http.server 8000
+    ```
+    Then visit `http://localhost:8000`.

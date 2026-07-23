@@ -1,0 +1,23 @@
+# 🔒 Secrets - ห้าม push ขึ้น GitHub เด็ดขาด!
+session_cookie.txt
+personal_access_token.txt
+*.token
+*.secret
+
+# 📦 Dependencies
+node_modules/
+package-lock.json
+package.json
+
+# 🖼️ OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# 🐍 Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
