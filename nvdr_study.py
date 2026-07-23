@@ -283,6 +283,9 @@ def export_web_data(all_symbol_data, sector_map, output_dir):
         }
     with open(os.path.join(output_dir, "web_data.json"), "w", encoding="utf-8") as f:
         json.dump(web_data, f)
+    # web_data.js: assign to global var for local file:// viewing (avoids fetch CORS)
+    with open(os.path.join(output_dir, "web_data.js"), "w", encoding="utf-8") as f:
+        f.write(f"window.WEB_DATA = {json.dumps(web_data)};")
 
 def generate_dashboard(output_dir, args):
     html_template = f"""<!DOCTYPE html>
@@ -294,6 +297,7 @@ def generate_dashboard(output_dir, args):
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <script src="web_data.js"></script>
     <style>
         :root {{ --uob-blue: #0f4c81; --bg-gray: #f4f7fb; --border: #d6deea; }}
         body {{ font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg-gray); color: #1b2430; }}
@@ -393,8 +397,7 @@ def generate_dashboard(output_dir, args):
 
         async function init() {{
             try {{
-                const response = await fetch('web_data.json');
-                rawData = await response.json();
+                rawData = window.WEB_DATA;
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('data-info').innerText = `Generated: ${{rawData.metadata.generated_at}} | Universe: ${{rawData.metadata.symbols.length}} symbols`;
 
@@ -423,7 +426,7 @@ def generate_dashboard(output_dir, args):
                 processData();
             }} catch (e) {{
                 console.error(e);
-                alert("Failed to load web_data.json. Ensure it exists in the same folder.");
+                alert("Failed to load web_data.js. Ensure it exists in the same folder.");
             }}
         }}
 
@@ -564,8 +567,9 @@ def generate_dashboard(output_dir, args):
     </script>
 </body>
 </html>"""
-    with open(os.path.join(output_dir, "dashboard.html"), "w", encoding="utf-8") as f:
+    with open(os.path.join(output_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(html_template)
+
 
 def main():
     args = parse_args()
@@ -712,7 +716,7 @@ def main():
     with open(os.path.join(args.output_dir, "report.html"), "w", encoding="utf-8") as f:
         f.write(html_content)
 
-    print(f"\nDone. Dashboard: {os.path.join(args.output_dir, 'dashboard.html')}")
+    print(f"\nDone. Dashboard: {os.path.join(args.output_dir, 'index.html')}")
 
 if __name__ == "__main__":
     main()

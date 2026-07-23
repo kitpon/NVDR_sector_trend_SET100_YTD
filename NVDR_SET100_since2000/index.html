@@ -7,6 +7,7 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <script src="web_data.js"></script>
     <style>
         :root { --uob-blue: #0f4c81; --bg-gray: #f4f7fb; --border: #d6deea; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg-gray); color: #1b2430; }
@@ -106,8 +107,7 @@
 
         async function init() {
             try {
-                const response = await fetch('web_data.json');
-                rawData = await response.json();
+                rawData = window.WEB_DATA;
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('data-info').innerText = `Generated: ${rawData.metadata.generated_at} | Universe: ${rawData.metadata.symbols.length} symbols`;
 
@@ -136,7 +136,7 @@
                 processData();
             } catch (e) {
                 console.error(e);
-                alert("Failed to load web_data.json. Ensure it exists in the same folder.");
+                alert("Failed to load web_data.js. Ensure it exists in the same folder.");
             }
         }
 
