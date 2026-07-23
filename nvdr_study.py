@@ -716,6 +716,30 @@ def main():
     with open(os.path.join(args.output_dir, "report.html"), "w", encoding="utf-8") as f:
         f.write(html_content)
 
+    # Root index.html: redirects to latest dashboard for GitHub Pages
+    root_idx = os.path.join(os.path.dirname(args.output_dir), "index.html")
+    output_name = os.path.basename(args.output_dir.rstrip("/\\"))
+    root_html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0;url={output_name}/index.html">
+    <title>NVDR Sector Trend Dashboard</title>
+    <style>
+        body {{ font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; text-align: center; }}
+        a {{ color: #0f4c81; }}
+    </style>
+</head>
+<body>
+    <h1>NVDR Sector Trend — SET100</h1>
+    <p>Redirecting to <a href="{output_name}/index.html">Interactive Dashboard</a>...</p>
+    <hr>
+    <p><small>Generated: {datetime.now().strftime("%Y-%m-%d %H:%M")}</small></p>
+</body>
+</html>"""
+    with open(root_idx, "w", encoding="utf-8") as f:
+        f.write(root_html)
+
     print(f"\nDone. Dashboard: {os.path.join(args.output_dir, 'index.html')}")
 
 if __name__ == "__main__":
