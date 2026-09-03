@@ -1612,3 +1612,5 @@ date,buy_mb,sell_mb,buy_sell_mb,net_mb,nvdr_pct,symbol,sector,cumulative_net_mb
 2026-08-27,67.72,31.25,98.97,36.47,24.23,SPALI,Property,2083.6499999999996
 2026-08-28,23.72,25.16,48.88,-1.45,29.44,SPALI,Property,2082.2
 2026-08-31,13.17,23.69,36.85,-10.52,35.17,SPALI,Property,2071.68
+2026-09-01,16.14,27.83,43.97,-11.7,25.58,SPALI,Property,2059.98
+2026-09-02,18.92,17.88,36.79,1.04,27.97,SPALI,Property,2061.02
