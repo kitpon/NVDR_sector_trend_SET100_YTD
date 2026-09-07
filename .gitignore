@@ -22,3 +22,4 @@ __pycache__/
 .venv/
 venv/
 *.BAK
+session_cookie.txt.BAK*
