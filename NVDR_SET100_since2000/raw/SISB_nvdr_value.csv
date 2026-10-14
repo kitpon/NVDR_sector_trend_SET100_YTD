@@ -1613,3 +1613,5 @@ date,buy_mb,sell_mb,buy_sell_mb,net_mb,nvdr_pct,symbol,sector,cumulative_net_mb
 2026-10-06,0.13,0.36,0.49,-0.23,5.42,SISB,Professional,542.6400000000003
 2026-10-07,0.75,0.33,1.08,0.42,10.08,SISB,Professional,543.0600000000003
 2026-10-08,0.18,0.3,0.48,-0.12,8.51,SISB,Professional,542.9400000000003
+2026-10-09,1.76,0.83,2.59,0.92,5.74,SISB,Professional,543.8600000000002
+2026-10-12,1.93,0.66,2.59,1.27,23.29,SISB,Professional,545.1300000000002
